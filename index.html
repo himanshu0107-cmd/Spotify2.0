@@ -8,19 +8,33 @@
     <title>Spotify 2.0</title>
 </head>
 <body>
+
+    <!-- Mobile Top Bar -->
+    <header class="mobile-topbar">
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+        <img src="logo.svg" alt="Spotify" class="mobile-logo">
+        <div class="avatar">U</div>
+    </header>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="container">
-        <aside class="left">
+        <!-- LEFT SIDEBAR -->
+        <aside class="left" id="sidebar">
+            <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">✕</button>
+
             <div class="nav-card">
-                <div class="logo-container">
-                    <img src="logo.svg" alt="Spotify logo" class="logo">
-                </div>
+                <img src="logo.svg" alt="Spotify logo" class="logo">
                 <ul class="nav-list">
                     <li class="nav-item active" data-nav="home">
-                        <img src="home.svg" alt="Home icon">
+                        <img src="home.svg" alt="Home">
                         <span>Home</span>
                     </li>
                     <li class="nav-item" data-nav="search">
-                        <img src="search.svg" alt="Search icon">
+                        <img src="search.svg" alt="Search">
                         <span>Search</span>
                     </li>
                 </ul>
@@ -64,6 +78,7 @@
             </div>
         </aside>
 
+        <!-- MAIN CONTENT -->
         <main class="right">
             <header class="topbar">
                 <div class="topbar-nav">
@@ -110,30 +125,22 @@
                 </div>
                 <div class="card-row">
                     <article class="music-card" data-track="Midnight Drive" data-artist="Lo-fi Collective">
-                        <div class="album-art art-one">
-                            <button class="play-overlay">▶</button>
-                        </div>
+                        <div class="album-art art-one"><button class="play-overlay">▶</button></div>
                         <h3>Midnight Drive</h3>
                         <p>Lo-fi beats for late nights.</p>
                     </article>
                     <article class="music-card" data-track="Summer Vibes" data-artist="Pop Collective">
-                        <div class="album-art art-two">
-                            <button class="play-overlay">▶</button>
-                        </div>
+                        <div class="album-art art-two"><button class="play-overlay">▶</button></div>
                         <h3>Summer Vibes</h3>
                         <p>Bright pop and sunny rhythms.</p>
                     </article>
                     <article class="music-card" data-track="Focus Flow" data-artist="Ambient Studio">
-                        <div class="album-art art-three">
-                            <button class="play-overlay">▶</button>
-                        </div>
+                        <div class="album-art art-three"><button class="play-overlay">▶</button></div>
                         <h3>Focus Flow</h3>
                         <p>Calm instrumentals to work to.</p>
                     </article>
                     <article class="music-card" data-track="Throwback Hits" data-artist="Classic FM">
-                        <div class="album-art art-four">
-                            <button class="play-overlay">▶</button>
-                        </div>
+                        <div class="album-art art-four"><button class="play-overlay">▶</button></div>
                         <h3>Throwback Hits</h3>
                         <p>Classic tracks for every mood.</p>
                     </article>
@@ -147,30 +154,22 @@
                 </div>
                 <div class="card-row">
                     <article class="music-card" data-track="Neon Nights" data-artist="Synthwave Radio">
-                        <div class="album-art art-five">
-                            <button class="play-overlay">▶</button>
-                        </div>
+                        <div class="album-art art-five"><button class="play-overlay">▶</button></div>
                         <h3>Neon Nights</h3>
                         <p>Synthwave and retro beats.</p>
                     </article>
                     <article class="music-card" data-track="Acoustic Morning" data-artist="Indie Folk">
-                        <div class="album-art art-six">
-                            <button class="play-overlay">▶</button>
-                        </div>
+                        <div class="album-art art-six"><button class="play-overlay">▶</button></div>
                         <h3>Acoustic Morning</h3>
                         <p>Gentle guitar to start your day.</p>
                     </article>
                     <article class="music-card" data-track="Hip-Hop Essentials" data-artist="Urban Beats">
-                        <div class="album-art art-seven">
-                            <button class="play-overlay">▶</button>
-                        </div>
+                        <div class="album-art art-seven"><button class="play-overlay">▶</button></div>
                         <h3>Hip-Hop Essentials</h3>
                         <p>The best of hip-hop culture.</p>
                     </article>
                     <article class="music-card" data-track="Jazz After Dark" data-artist="Blue Note">
-                        <div class="album-art art-eight">
-                            <button class="play-overlay">▶</button>
-                        </div>
+                        <div class="album-art art-eight"><button class="play-overlay">▶</button></div>
                         <h3>Jazz After Dark</h3>
                         <p>Smooth jazz for the evening.</p>
                     </article>
@@ -179,8 +178,9 @@
         </main>
     </div>
 
-    <!-- Player Bar -->
+    <!-- PLAYER BAR -->
     <footer class="player-bar">
+        <!-- Track Info -->
         <div class="player-track">
             <div class="player-art" id="playerArt"></div>
             <div class="player-info">
@@ -190,13 +190,14 @@
             <button class="heart-btn" id="heartBtn" title="Like">♡</button>
         </div>
 
+        <!-- Controls + Progress -->
         <div class="player-controls">
             <div class="control-btns">
-                <button class="ctrl-btn" id="btnShuffle" title="Shuffle">⇄</button>
+                <button class="ctrl-btn hide-xs" id="btnShuffle" title="Shuffle">⇄</button>
                 <button class="ctrl-btn" id="btnPrev" title="Previous">⏮</button>
                 <button class="ctrl-btn play-btn" id="btnPlay" title="Play">▶</button>
                 <button class="ctrl-btn" id="btnNext" title="Next">⏭</button>
-                <button class="ctrl-btn" id="btnRepeat" title="Repeat">↻</button>
+                <button class="ctrl-btn hide-xs" id="btnRepeat" title="Repeat">↻</button>
             </div>
             <div class="progress-row">
                 <span class="time" id="timeElapsed">0:00</span>
@@ -208,6 +209,7 @@
             </div>
         </div>
 
+        <!-- Volume + Extras -->
         <div class="player-extra">
             <button class="ctrl-btn" title="Queue">☰</button>
             <button class="ctrl-btn" title="Devices">📱</button>
@@ -220,6 +222,22 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-nav">
+        <button class="mob-nav-btn active" data-nav="home">
+            <img src="home.svg" alt="Home">
+            <span>Home</span>
+        </button>
+        <button class="mob-nav-btn" data-nav="search">
+            <img src="search.svg" alt="Search">
+            <span>Search</span>
+        </button>
+        <button class="mob-nav-btn" data-nav="library" id="mobLibraryBtn">
+            <span class="mob-nav-icon">📚</span>
+            <span>Library</span>
+        </button>
+    </nav>
 
     <script src="app.js"></script>
 </body>
