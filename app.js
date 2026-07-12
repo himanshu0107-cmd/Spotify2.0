@@ -286,14 +286,16 @@ SONGS.forEach((song, idx) => {
 /* ══════════════════════════════════════════
    SEARCH VIEW
 ══════════════════════════════════════════ */
-const searchView     = $('searchView');
-const searchInput    = $('searchInput');
-const searchClear    = $('searchClear');
-const browseSection  = $('browseSection');
-const searchResults  = $('searchResults');
-const searchSongList = $('searchSongList');
-const resultsLabel   = $('resultsLabel');
-const noResults      = $('noResults');
+const homeView        = $('homeView');
+const searchView      = $('searchView');
+const playlistView    = $('playlistView');
+const searchInput     = $('searchInput');
+const searchClear     = $('searchClear');
+const browseSection   = $('browseSection');
+const searchResults   = $('searchResults');
+const searchSongList  = $('searchSongList');
+const resultsLabel    = $('resultsLabel');
+const noResults       = $('noResults');
 
 function showView(view) {
     homeView.classList.add('hidden');
@@ -367,8 +369,6 @@ document.querySelectorAll('.genre-card').forEach(card => {
 /* ══════════════════════════════════════════
    VIEW SWITCHING — nav items
 ══════════════════════════════════════════ */
-const homeView        = $('homeView');
-const playlistView    = $('playlistView');
 const playlistHeroArt = $('playlistHeroArt');
 const playlistTitle   = $('playlistTitle');
 const playlistMeta    = $('playlistMeta');
