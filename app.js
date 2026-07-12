@@ -497,7 +497,7 @@ document.querySelectorAll('.mob-nav-btn').forEach(btn => {
             setTimeout(() => searchInput.focus(), 100);
         }
     });
-};
+});
 
 /* Desktop nav */
 document.querySelectorAll('.nav-item').forEach(item => {
@@ -515,7 +515,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
             setTimeout(() => searchInput.focus(), 100);
         }
     });
-};
+});
 
 /* ══════════════════════════════════════════
    GREETING
