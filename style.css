@@ -604,3 +604,97 @@ body {
     .card-row { grid-template-columns: 1fr; }
     #btnShuffle, #btnRepeat { display: none; }
 }
+
+/* ── Search View ── */
+.search-bar-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 28px;
+}
+.search-icon {
+    position: absolute;
+    left: 16px;
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 1;
+}
+.search-input {
+    width: 100%;
+    padding: 14px 48px 14px 46px;
+    border-radius: 999px;
+    border: none;
+    background: #fff;
+    color: #000;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
+    transition: box-shadow 0.2s;
+}
+.search-input:focus {
+    box-shadow: 0 0 0 3px rgba(29,185,84,0.5);
+}
+.search-clear {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 50%;
+    transition: color 0.2s;
+}
+.search-clear:hover { color: #000; }
+
+.browse-title {
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    margin-bottom: 16px;
+}
+.genre-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+}
+.genre-card {
+    border-radius: 12px;
+    padding: 20px 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 90px;
+    display: flex;
+    align-items: flex-end;
+    transition: transform 0.15s, filter 0.15s;
+    user-select: none;
+    overflow: hidden;
+    position: relative;
+}
+.genre-card:hover { transform: scale(1.04); filter: brightness(1.15); }
+
+.results-label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+.no-results {
+    color: var(--muted);
+    text-align: center;
+    padding: 40px 0;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 1100px) {
+    .genre-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 768px) {
+    .genre-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .genre-card  { padding: 16px 12px; min-height: 76px; font-size: 0.9rem; }
+}
+@media (max-width: 480px) {
+    .genre-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .genre-card  { padding: 14px 10px; min-height: 68px; font-size: 0.85rem; }
+    .search-input { font-size: 0.9rem; padding: 12px 44px 12px 42px; }
+}

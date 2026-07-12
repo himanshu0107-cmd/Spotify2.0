@@ -284,7 +284,88 @@ SONGS.forEach((song, idx) => {
 });
 
 /* ══════════════════════════════════════════
-   PLAYLIST VIEW
+   SEARCH VIEW
+══════════════════════════════════════════ */
+const searchView     = $('searchView');
+const searchInput    = $('searchInput');
+const searchClear    = $('searchClear');
+const browseSection  = $('browseSection');
+const searchResults  = $('searchResults');
+const searchSongList = $('searchSongList');
+const resultsLabel   = $('resultsLabel');
+const noResults      = $('noResults');
+
+function showView(view) {
+    homeView.classList.add('hidden');
+    searchView.classList.add('hidden');
+    playlistView.classList.add('hidden');
+    view.classList.remove('hidden');
+    $('mainContent').scrollTop = 0;
+}
+
+function renderSearchResults(query) {
+    const q = query.trim().toLowerCase();
+    searchSongList.innerHTML = '';
+
+    if (!q) {
+        browseSection.classList.remove('hidden');
+        searchResults.classList.add('hidden');
+        searchClear.classList.add('hidden');
+        return;
+    }
+
+    searchClear.classList.remove('hidden');
+    browseSection.classList.add('hidden');
+    searchResults.classList.remove('hidden');
+
+    const matches = SONGS.filter(s =>
+        s.title.toLowerCase().includes(q) ||
+        s.artist.toLowerCase().includes(q) ||
+        s.genre.toLowerCase().includes(q)
+    );
+
+    resultsLabel.textContent = matches.length
+        ? `${matches.length} result${matches.length > 1 ? 's' : ''} for "${query.trim()}"`
+        : '';
+
+    if (!matches.length) {
+        noResults.classList.remove('hidden');
+        return;
+    }
+    noResults.classList.add('hidden');
+
+    matches.forEach((song, num) => {
+        const idx = SONGS.indexOf(song);
+        const li  = buildRow(song, idx, num + 1);
+        const doPlay = () => {
+            currentQueue = matches.map(s => SONGS.indexOf(s));
+            playIndex(idx);
+        };
+        li.addEventListener('click', doPlay);
+        li.querySelector('.row-play').addEventListener('click', e => { e.stopPropagation(); doPlay(); });
+        searchSongList.appendChild(li);
+    });
+}
+
+searchInput.addEventListener('input', () => renderSearchResults(searchInput.value));
+
+searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    renderSearchResults('');
+    searchInput.focus();
+});
+
+// Genre card click → filter by genre
+document.querySelectorAll('.genre-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const genre = card.dataset.genre;
+        searchInput.value = genre;
+        renderSearchResults(genre);
+    });
+});
+
+/* ══════════════════════════════════════════
+   VIEW SWITCHING — nav items
 ══════════════════════════════════════════ */
 const homeView        = $('homeView');
 const playlistView    = $('playlistView');
@@ -330,8 +411,11 @@ function openPlaylist(key) {
     };
 
     // Switch views
-    homeView.classList.add('hidden');
-    playlistView.classList.remove('hidden');
+    showView(playlistView);
+
+    // sync nav
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
 
     // Highlight active library item
     document.querySelectorAll('.library-item').forEach(li => {
@@ -344,10 +428,11 @@ function openPlaylist(key) {
 }
 
 backToHome.addEventListener('click', () => {
-    playlistView.classList.add('hidden');
-    homeView.classList.remove('hidden');
+    showView(homeView);
     document.querySelectorAll('.library-item').forEach(li => li.classList.remove('active-playlist'));
-    $('mainContent').scrollTop = 0;
+    // sync nav active state
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.nav === 'home'));
+    document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.nav === 'home'));
 });
 
 /* ══════════════════════════════════════════
@@ -402,12 +487,17 @@ document.querySelectorAll('.mob-nav-btn').forEach(btn => {
         btn.classList.add('active');
         if (btn.dataset.nav === 'library') openSidebar();
         if (btn.dataset.nav === 'home') {
-            homeView.classList.remove('hidden');
-            playlistView.classList.add('hidden');
+            showView(homeView);
             document.querySelectorAll('.library-item').forEach(li => li.classList.remove('active-playlist'));
         }
+        if (btn.dataset.nav === 'search') {
+            showView(searchView);
+            searchInput.value = '';
+            renderSearchResults('');
+            setTimeout(() => searchInput.focus(), 100);
+        }
     });
-});
+};
 
 /* Desktop nav */
 document.querySelectorAll('.nav-item').forEach(item => {
@@ -415,12 +505,17 @@ document.querySelectorAll('.nav-item').forEach(item => {
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         item.classList.add('active');
         if (item.dataset.nav === 'home') {
-            homeView.classList.remove('hidden');
-            playlistView.classList.add('hidden');
+            showView(homeView);
             document.querySelectorAll('.library-item').forEach(li => li.classList.remove('active-playlist'));
         }
+        if (item.dataset.nav === 'search') {
+            showView(searchView);
+            searchInput.value = '';
+            renderSearchResults('');
+            setTimeout(() => searchInput.focus(), 100);
+        }
     });
-});
+};
 
 /* ══════════════════════════════════════════
    GREETING

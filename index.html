@@ -182,6 +182,45 @@
                 </section>
             </div>
 
+            <!-- SEARCH VIEW -->
+            <div id="searchView" class="hidden">
+                <div class="search-bar-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" class="search-input" placeholder="What do you want to listen to?" autocomplete="off">
+                    <button class="search-clear hidden" id="searchClear">✕</button>
+                </div>
+
+                <!-- Browse genres (shown when input is empty) -->
+                <div id="browseSection">
+                    <h2 class="browse-title">Browse categories</h2>
+                    <div class="genre-grid">
+                        <div class="genre-card" style="background:linear-gradient(135deg,#e52d27,#b31217)" data-genre="Pop">Pop</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#4e54c8,#8f94fb)" data-genre="Hip-Hop">Hip-Hop</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#11998e,#38ef7d)" data-genre="R&B">R&amp;B</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#f7971e,#ffd200)" data-genre="Pop Rock">Pop Rock</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#00b4db,#0083b0)" data-genre="Indie Pop">Indie Pop</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#bdc3c7,#2c3e50)" data-genre="Soul">Soul</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#e96c5a,#f7c59f)" data-genre="Dance-pop">Dance-pop</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#8e2de2,#4a00e0)" data-genre="Synth-pop">Synth-pop</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#e52d27,#b31217)" data-genre="Rock">Rock</div>
+                        <div class="genre-card" style="background:linear-gradient(135deg,#1a1a2e,#4a90d9)" data-genre="Jazz">Jazz</div>
+                    </div>
+                </div>
+
+                <!-- Results (shown when typing) -->
+                <div id="searchResults" class="hidden">
+                    <p class="results-label" id="resultsLabel"></p>
+                    <div class="song-list-header">
+                        <span>#</span>
+                        <span>Title</span>
+                        <span class="hide-mobile">Genre</span>
+                        <span class="col-right">⏱</span>
+                    </div>
+                    <ul class="song-list" id="searchSongList"></ul>
+                    <p class="no-results hidden" id="noResults">No results found for this search.</p>
+                </div>
+            </div>
+
             <!-- PLAYLIST VIEW (shown when a playlist is opened) -->
             <div id="playlistView" class="hidden">
                 <button class="back-btn" id="backToHome">← Back</button>
