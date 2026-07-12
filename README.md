@@ -76,6 +76,6 @@ Spotify2.0/
 
 ---
 
-## 🙌 Made With ❤️ by Himanshu Pandey
+## Made With ❤️ by Himanshu Pandey
 
 
