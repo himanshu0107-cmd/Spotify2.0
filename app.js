@@ -5,18 +5,18 @@
    Map playlist key → array of SONGS indices
 ══════════════════════════════════════════ */
 const PLAYLISTS = {
-    liked:     { name: 'Liked Songs',        art: 'linear-gradient(135deg,#4b0082,#7b2ff7)', indices: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] },
-    dailymix:  { name: 'Daily Mix 1',        art: 'linear-gradient(135deg,#1f5c4a,#2d9c6e)', indices: [0,3,6,9,12,15,18,21,24,27] },
-    discover:  { name: 'Discover Weekly',    art: 'linear-gradient(135deg,#4a1a6d,#7a3ed6)', indices: [1,4,7,10,13,16,19,22,25] },
-    chill:     { name: 'Chill Hits',         art: 'linear-gradient(135deg,#1c4f7d,#4b8ef5)', indices: [2,5,8,11,14,17,20,23,26] },
-    lofi:      { name: 'Midnight Drive',     art: 'linear-gradient(135deg,#ff5f6d,#ffc371)', indices: [0,2,4,6,8,10,12] },
-    pop:       { name: 'Summer Vibes',       art: 'linear-gradient(135deg,#56ccf2,#2f80ed)', indices: [1,3,5,7,9,11,13] },
-    focus:     { name: 'Focus Flow',         art: 'linear-gradient(135deg,#00b894,#55efc4)', indices: [14,15,16,17,18,19,20] },
-    throwback: { name: 'Throwback Hits',     art: 'linear-gradient(135deg,#f7971e,#ffd200)', indices: [21,22,23,24,25,26,27] },
-    synthwave: { name: 'Neon Nights',        art: 'linear-gradient(135deg,#8e2de2,#f000ff)', indices: [6,7,8,9,10,11] },
-    acoustic:  { name: 'Acoustic Morning',   art: 'linear-gradient(135deg,#a8c0ff,#3f2b96)', indices: [15,16,17,18,19] },
-    hiphop:    { name: 'Hip-Hop Essentials', art: 'linear-gradient(135deg,#f953c6,#b91d73)', indices: [3,6,12,13,20,21,22,23,25] },
-    jazz:      { name: 'Jazz After Dark',    art: 'linear-gradient(135deg,#1a1a2e,#4a90d9)', indices: [0,5,10,15,20,25] },
+    liked:     { name: 'Liked Songs',            cover: 'playlist-art/liked.jpg',      art: 'linear-gradient(135deg,#4b0082,#7b2ff7)', indices: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39] },
+    arijit:    { name: 'Arijit Singh Hits',      cover: 'playlist-art/arijit.jpg',     art: 'linear-gradient(135deg,#e96c5a,#f7c59f)', indices: [0,1,2,4,5,6,7,17,25] },
+    bollywood: { name: 'Bollywood Blockbusters', cover: 'playlist-art/bollywood.jpg',  art: 'linear-gradient(135deg,#f7971e,#ffd200)', indices: [0,1,2,3,4,5,6,7,8,9,23,24,25,26,27] },
+    punjabi:   { name: 'Punjabi Hits',           cover: 'playlist-art/punjabi.jpg',    art: 'linear-gradient(135deg,#8e2de2,#4a00e0)', indices: [10,11,12,13,14,15,16,17] },
+    party:     { name: 'Desi Party Anthems',     cover: 'playlist-art/party.jpg',      art: 'linear-gradient(135deg,#ff416c,#ff4b2b)', indices: [23,24,25,26,27,11,12,13] },
+    retro:     { name: '90s Bollywood Retro',    cover: 'playlist-art/retro.jpg',      art: 'linear-gradient(135deg,#f953c6,#b91d73)', indices: [30,31,32,33,38,39] },
+    south:     { name: 'South Indian Hits',      cover: 'playlist-art/south.jpg',      art: 'linear-gradient(135deg,#00b4db,#0083b0)', indices: [34,35,36,37,24] },
+    indie:     { name: 'Indie Hindi Chill',      cover: 'playlist-art/indie.jpg',      art: 'linear-gradient(135deg,#11998e,#38ef7d)', indices: [18,19,20,21,22] },
+    lofi:      { name: 'Lofi Study Beats',       cover: 'playlist-art/lofi.jpg',       art: 'linear-gradient(135deg,#a8c0ff,#3f2b96)', indices: [38,39,18,19,20,21] },
+    devotional:{ name: 'Bhakti & Devotional',    cover: 'playlist-art/devotional.jpg', art: 'linear-gradient(135deg,#f7971e,#ffd200)', indices: [28,29] },
+    morning:   { name: 'Subah Ki Shuruwaat',     cover: 'playlist-art/morning.jpg',    art: 'linear-gradient(135deg,#ff9a9e,#fad0c4)', indices: [1,2,18,22,32,33,38,39] },
+    drive:     { name: 'Highway Drive Mix',      cover: 'playlist-art/drive.jpg',      art: 'linear-gradient(135deg,#1e3c72,#2a5298)', indices: [10,11,14,15,16,24,25,26] },
 };
 
 /* ══════════════════════════════════════════
@@ -141,6 +141,9 @@ function playIndex(songIdx, offset = 0) {
     playerTitle.textContent  = song.title;
     playerArtist.textContent = song.artist;
     playerArt.style.background = song.gradient;
+    playerArt.style.backgroundImage = `url('${song.cover}'), ${song.gradient}`;
+    playerArt.style.backgroundSize = 'cover';
+    playerArt.style.backgroundPosition = 'center';
     timeDuration.textContent = fmt(song.duration);
     heartBtn.classList.remove('liked');
     heartBtn.textContent = '♡';
@@ -258,7 +261,9 @@ function buildRow(song, songIdx, num) {
             <button class="row-play">▶</button>
         </div>
         <div class="song-info">
-            <div class="song-thumb" style="background:${song.gradient}"></div>
+            <div class="song-thumb" style="background:${song.gradient}">
+                <img src="${song.cover}" alt="" onerror="this.style.display='none'">
+            </div>
             <div class="song-meta">
                 <p class="song-title">${song.title}</p>
                 <p class="song-artist">${song.artist}</p>
@@ -385,6 +390,10 @@ function openPlaylist(key) {
 
     // Update hero
     playlistHeroArt.style.background = pl.art;
+    playlistHeroArt.style.backgroundSize = 'cover';
+    playlistHeroArt.style.backgroundPosition = 'center';
+    if (pl.cover) playlistHeroArt.style.backgroundImage = `url('${pl.cover}'), ${pl.art}`;
+    else playlistHeroArt.style.backgroundImage = pl.art;
     playlistTitle.textContent = pl.name;
     playlistMeta.textContent  = `${pl.indices.length} songs`;
 

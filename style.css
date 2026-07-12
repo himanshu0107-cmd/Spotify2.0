@@ -698,3 +698,12 @@ body {
     .genre-card  { padding: 14px 10px; min-height: 68px; font-size: 0.85rem; }
     .search-input { font-size: 0.9rem; padding: 12px 44px 12px 42px; }
 }
+
+/* ── Song cover image ── */
+.song-thumb { position: relative; overflow: hidden; }
+.song-thumb img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
