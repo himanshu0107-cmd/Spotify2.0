@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="utility.css">
     <title>Spotify 2.0</title>
 </head>
 <body>
@@ -18,24 +17,23 @@
         <div class="avatar">U</div>
     </header>
 
-    <!-- Sidebar Overlay (mobile) -->
+    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="container">
-        <!-- LEFT SIDEBAR -->
+
+        <!-- SIDEBAR -->
         <aside class="left" id="sidebar">
-            <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">✕</button>
+            <button class="sidebar-close" id="sidebarClose">✕</button>
 
             <div class="nav-card">
-                <img src="logo.svg" alt="Spotify logo" class="logo">
+                <img src="logo.svg" alt="Spotify" class="logo">
                 <ul class="nav-list">
                     <li class="nav-item active" data-nav="home">
-                        <img src="home.svg" alt="Home">
-                        <span>Home</span>
+                        <img src="home.svg" alt="Home"><span>Home</span>
                     </li>
                     <li class="nav-item" data-nav="search">
-                        <img src="search.svg" alt="Search">
-                        <span>Search</span>
+                        <img src="search.svg" alt="Search"><span>Search</span>
                     </li>
                 </ul>
             </div>
@@ -46,30 +44,30 @@
                     <button class="icon-btn" title="Create playlist">＋</button>
                 </div>
                 <ul class="library-list">
-                    <li class="library-item">
+                    <li class="library-item" data-playlist="liked">
                         <div class="lib-art lib-art-1"></div>
-                        <div>
+                        <div class="lib-info">
                             <p class="lib-title">Liked Songs</p>
-                            <p class="lib-sub">Playlist • 42 songs</p>
+                            <p class="lib-sub">Playlist • 28 songs</p>
                         </div>
                     </li>
-                    <li class="library-item">
+                    <li class="library-item" data-playlist="dailymix">
                         <div class="lib-art lib-art-2"></div>
-                        <div>
+                        <div class="lib-info">
                             <p class="lib-title">Daily Mix 1</p>
                             <p class="lib-sub">Playlist • Spotify</p>
                         </div>
                     </li>
-                    <li class="library-item">
+                    <li class="library-item" data-playlist="discover">
                         <div class="lib-art lib-art-3"></div>
-                        <div>
+                        <div class="lib-info">
                             <p class="lib-title">Discover Weekly</p>
                             <p class="lib-sub">Playlist • Spotify</p>
                         </div>
                     </li>
-                    <li class="library-item">
+                    <li class="library-item" data-playlist="chill">
                         <div class="lib-art lib-art-4"></div>
-                        <div>
+                        <div class="lib-info">
                             <p class="lib-title">Chill Hits</p>
                             <p class="lib-sub">Playlist • Spotify</p>
                         </div>
@@ -78,8 +76,10 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
-        <main class="right">
+        <!-- MAIN -->
+        <main class="right" id="mainContent">
+
+            <!-- Desktop Topbar -->
             <header class="topbar">
                 <div class="topbar-nav">
                     <button class="nav-arrow" id="btnBack">&#8249;</button>
@@ -92,127 +92,138 @@
                 </div>
             </header>
 
-            <section class="hero">
-                <h1 id="greeting">Good evening</h1>
-                <div class="playlist-grid">
-                    <article class="feature-card" data-track="Liked Songs" data-artist="Various Artists">
-                        <h3>Liked Songs</h3>
-                        <span>❤</span>
-                        <button class="card-play-btn">▶</button>
-                    </article>
-                    <article class="feature-card green" data-track="Daily Mix 1" data-artist="Spotify">
-                        <h3>Daily Mix 1</h3>
-                        <span>♪</span>
-                        <button class="card-play-btn">▶</button>
-                    </article>
-                    <article class="feature-card purple" data-track="Discover Weekly" data-artist="Spotify">
-                        <h3>Discover Weekly</h3>
-                        <span>✦</span>
-                        <button class="card-play-btn">▶</button>
-                    </article>
-                    <article class="feature-card blue" data-track="Chill Hits" data-artist="Various Artists">
-                        <h3>Chill Hits</h3>
-                        <span>☁</span>
-                        <button class="card-play-btn">▶</button>
-                    </article>
-                </div>
-            </section>
+            <!-- HOME VIEW -->
+            <div id="homeView">
+                <section class="hero">
+                    <h1 id="greeting">Good evening</h1>
+                    <div class="playlist-grid">
+                        <article class="feature-card" data-playlist="liked">
+                            <h3>Liked Songs</h3><span>❤</span>
+                            <button class="card-play-btn">▶</button>
+                        </article>
+                        <article class="feature-card green" data-playlist="dailymix">
+                            <h3>Daily Mix 1</h3><span>♪</span>
+                            <button class="card-play-btn">▶</button>
+                        </article>
+                        <article class="feature-card purple" data-playlist="discover">
+                            <h3>Discover Weekly</h3><span>✦</span>
+                            <button class="card-play-btn">▶</button>
+                        </article>
+                        <article class="feature-card blue" data-playlist="chill">
+                            <h3>Chill Hits</h3><span>☁</span>
+                            <button class="card-play-btn">▶</button>
+                        </article>
+                    </div>
+                </section>
 
-            <section class="content-section">
-                <div class="section-header">
-                    <h2>Made for you</h2>
-                    <a href="#">Show all</a>
-                </div>
-                <div class="card-row">
-                    <article class="music-card" data-track="Midnight Drive" data-artist="Lo-fi Collective">
-                        <div class="album-art art-one"><button class="play-overlay">▶</button></div>
-                        <h3>Midnight Drive</h3>
-                        <p>Lo-fi beats for late nights.</p>
-                    </article>
-                    <article class="music-card" data-track="Summer Vibes" data-artist="Pop Collective">
-                        <div class="album-art art-two"><button class="play-overlay">▶</button></div>
-                        <h3>Summer Vibes</h3>
-                        <p>Bright pop and sunny rhythms.</p>
-                    </article>
-                    <article class="music-card" data-track="Focus Flow" data-artist="Ambient Studio">
-                        <div class="album-art art-three"><button class="play-overlay">▶</button></div>
-                        <h3>Focus Flow</h3>
-                        <p>Calm instrumentals to work to.</p>
-                    </article>
-                    <article class="music-card" data-track="Throwback Hits" data-artist="Classic FM">
-                        <div class="album-art art-four"><button class="play-overlay">▶</button></div>
-                        <h3>Throwback Hits</h3>
-                        <p>Classic tracks for every mood.</p>
-                    </article>
-                </div>
-            </section>
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>Made for you</h2>
+                        <a href="#">Show all</a>
+                    </div>
+                    <div class="card-row">
+                        <article class="music-card" data-playlist="lofi">
+                            <div class="album-art art-one"><button class="play-overlay">▶</button></div>
+                            <h3>Midnight Drive</h3><p>Lo-fi beats for late nights.</p>
+                        </article>
+                        <article class="music-card" data-playlist="pop">
+                            <div class="album-art art-two"><button class="play-overlay">▶</button></div>
+                            <h3>Summer Vibes</h3><p>Bright pop and sunny rhythms.</p>
+                        </article>
+                        <article class="music-card" data-playlist="focus">
+                            <div class="album-art art-three"><button class="play-overlay">▶</button></div>
+                            <h3>Focus Flow</h3><p>Calm instrumentals to work to.</p>
+                        </article>
+                        <article class="music-card" data-playlist="throwback">
+                            <div class="album-art art-four"><button class="play-overlay">▶</button></div>
+                            <h3>Throwback Hits</h3><p>Classic tracks for every mood.</p>
+                        </article>
+                    </div>
+                </section>
 
-            <section class="content-section">
-                <div class="section-header">
-                    <h2>Recently played</h2>
-                    <a href="#">Show all</a>
-                </div>
-                <div class="card-row">
-                    <article class="music-card" data-track="Neon Nights" data-artist="Synthwave Radio">
-                        <div class="album-art art-five"><button class="play-overlay">▶</button></div>
-                        <h3>Neon Nights</h3>
-                        <p>Synthwave and retro beats.</p>
-                    </article>
-                    <article class="music-card" data-track="Acoustic Morning" data-artist="Indie Folk">
-                        <div class="album-art art-six"><button class="play-overlay">▶</button></div>
-                        <h3>Acoustic Morning</h3>
-                        <p>Gentle guitar to start your day.</p>
-                    </article>
-                    <article class="music-card" data-track="Hip-Hop Essentials" data-artist="Urban Beats">
-                        <div class="album-art art-seven"><button class="play-overlay">▶</button></div>
-                        <h3>Hip-Hop Essentials</h3>
-                        <p>The best of hip-hop culture.</p>
-                    </article>
-                    <article class="music-card" data-track="Jazz After Dark" data-artist="Blue Note">
-                        <div class="album-art art-eight"><button class="play-overlay">▶</button></div>
-                        <h3>Jazz After Dark</h3>
-                        <p>Smooth jazz for the evening.</p>
-                    </article>
-                </div>
-            </section>
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>Recently played</h2>
+                        <a href="#">Show all</a>
+                    </div>
+                    <div class="card-row">
+                        <article class="music-card" data-playlist="synthwave">
+                            <div class="album-art art-five"><button class="play-overlay">▶</button></div>
+                            <h3>Neon Nights</h3><p>Synthwave and retro beats.</p>
+                        </article>
+                        <article class="music-card" data-playlist="acoustic">
+                            <div class="album-art art-six"><button class="play-overlay">▶</button></div>
+                            <h3>Acoustic Morning</h3><p>Gentle guitar to start your day.</p>
+                        </article>
+                        <article class="music-card" data-playlist="hiphop">
+                            <div class="album-art art-seven"><button class="play-overlay">▶</button></div>
+                            <h3>Hip-Hop Essentials</h3><p>The best of hip-hop culture.</p>
+                        </article>
+                        <article class="music-card" data-playlist="jazz">
+                            <div class="album-art art-eight"><button class="play-overlay">▶</button></div>
+                            <h3>Jazz After Dark</h3><p>Smooth jazz for the evening.</p>
+                        </article>
+                    </div>
+                </section>
 
-            <!-- ALL SONGS LIST -->
-            <section class="content-section" id="songListSection">
-                <div class="section-header">
-                    <h2>🎵 All Songs</h2>
-                    <span class="song-count" id="songCount"></span>
+                <!-- ALL SONGS -->
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>🎵 All Songs</h2>
+                        <span class="song-count" id="songCount"></span>
+                    </div>
+                    <div class="song-list-header">
+                        <span>#</span>
+                        <span>Title</span>
+                        <span class="hide-mobile">Genre</span>
+                        <span class="col-right">⏱</span>
+                    </div>
+                    <ul class="song-list" id="songList"></ul>
+                </section>
+            </div>
+
+            <!-- PLAYLIST VIEW (shown when a playlist is opened) -->
+            <div id="playlistView" class="hidden">
+                <button class="back-btn" id="backToHome">← Back</button>
+                <div class="playlist-hero">
+                    <div class="playlist-hero-art" id="playlistHeroArt"></div>
+                    <div class="playlist-hero-info">
+                        <p class="playlist-label">PLAYLIST</p>
+                        <h1 class="playlist-title" id="playlistTitle"></h1>
+                        <p class="playlist-meta" id="playlistMeta"></p>
+                        <button class="play-all-btn" id="playAllBtn">▶ Play All</button>
+                    </div>
                 </div>
                 <div class="song-list-header">
-                    <span class="col-num">#</span>
-                    <span class="col-title">Title</span>
-                    <span class="col-genre hide-mobile">Genre</span>
-                    <span class="col-dur">⏱</span>
+                    <span>#</span>
+                    <span>Title</span>
+                    <span class="hide-mobile">Genre</span>
+                    <span class="col-right">⏱</span>
                 </div>
-                <ul class="song-list" id="songList"></ul>
-            </section>
+                <ul class="song-list" id="playlistSongList"></ul>
+            </div>
+
         </main>
     </div>
 
     <!-- PLAYER BAR -->
     <footer class="player-bar">
-        <!-- Track Info -->
         <div class="player-track">
             <div class="player-art" id="playerArt"></div>
             <div class="player-info">
                 <p class="player-title" id="playerTitle">Select a track</p>
                 <p class="player-artist" id="playerArtist">—</p>
             </div>
-            <button class="heart-btn" id="heartBtn" title="Like">♡</button>
+            <button class="heart-btn" id="heartBtn">♡</button>
         </div>
 
-        <!-- Controls + Progress -->
         <div class="player-controls">
             <div class="control-btns">
-                <button class="ctrl-btn hide-xs" id="btnShuffle" title="Shuffle">⇄</button>
-                <button class="ctrl-btn" id="btnPrev" title="Previous">⏮</button>
-                <button class="ctrl-btn play-btn" id="btnPlay" title="Play">▶</button>
-                <button class="ctrl-btn" id="btnNext" title="Next">⏭</button>
-                <button class="ctrl-btn hide-xs" id="btnRepeat" title="Repeat">↻</button>
+                <button class="ctrl-btn" id="btnShuffle" title="Shuffle">⇄</button>
+                <button class="ctrl-btn" id="btnPrev">⏮</button>
+                <button class="ctrl-btn play-btn" id="btnPlay">▶</button>
+                <button class="ctrl-btn" id="btnNext">⏭</button>
+                <button class="ctrl-btn" id="btnRepeat" title="Repeat">↻</button>
             </div>
             <div class="progress-row">
                 <span class="time" id="timeElapsed">0:00</span>
@@ -220,20 +231,15 @@
                     <div class="progress-fill" id="progressFill"></div>
                     <div class="progress-thumb" id="progressThumb"></div>
                 </div>
-                <span class="time" id="timeDuration">3:30</span>
+                <span class="time" id="timeDuration">0:00</span>
             </div>
         </div>
 
-        <!-- Volume + Extras -->
         <div class="player-extra">
-            <button class="ctrl-btn" title="Queue">☰</button>
-            <button class="ctrl-btn" title="Devices">📱</button>
-            <div class="volume-row">
-                <button class="ctrl-btn" id="btnMute" title="Mute">🔊</button>
-                <div class="volume-bar" id="volumeBar">
-                    <div class="volume-fill" id="volumeFill" style="width:70%"></div>
-                    <div class="volume-thumb" id="volumeThumb" style="left:70%"></div>
-                </div>
+            <button class="ctrl-btn" id="btnMute">🔊</button>
+            <div class="volume-bar" id="volumeBar">
+                <div class="volume-fill" id="volumeFill" style="width:70%"></div>
+                <div class="volume-thumb" id="volumeThumb" style="left:70%"></div>
             </div>
         </div>
     </footer>
@@ -241,16 +247,13 @@
     <!-- Mobile Bottom Nav -->
     <nav class="mobile-nav">
         <button class="mob-nav-btn active" data-nav="home">
-            <img src="home.svg" alt="Home">
-            <span>Home</span>
+            <img src="home.svg" alt="Home"><span>Home</span>
         </button>
         <button class="mob-nav-btn" data-nav="search">
-            <img src="search.svg" alt="Search">
-            <span>Search</span>
+            <img src="search.svg" alt="Search"><span>Search</span>
         </button>
-        <button class="mob-nav-btn" data-nav="library" id="mobLibraryBtn">
-            <span class="mob-nav-icon">📚</span>
-            <span>Library</span>
+        <button class="mob-nav-btn" data-nav="library">
+            <span style="font-size:1.2rem">📚</span><span>Library</span>
         </button>
     </nav>
 
