@@ -20,48 +20,10 @@ const PLAYLISTS = {
 };
 
 /* ══════════════════════════════════════════
-   WEB AUDIO
+   HTML5 AUDIO ENGINE
 ══════════════════════════════════════════ */
-let audioCtx = null, gainNode = null, currentSource = null;
-let startTime = 0, pauseOffset = 0, tickInterval = null;
-
-function getCtx() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        gainNode = audioCtx.createGain();
-        gainNode.gain.value = volume;
-        gainNode.connect(audioCtx.destination);
-    }
-    return audioCtx;
-}
-
-const bufCache = {};
-function getBuffer(song) {
-    if (bufCache[song.id]) return bufCache[song.id];
-    const ctx = getCtx();
-    const sr  = ctx.sampleRate;
-    const dur = song.duration;
-    const buf = ctx.createBuffer(2, sr * dur, sr);
-    const notes = [220,246.94,261.63,293.66,329.63,349.23,392,440,493.88,523.25,587.33,659.25,698.46,783.99,880];
-    const f1 = notes[(song.id - 1) % notes.length];
-    const f2 = f1 * 1.5;
-    const f3 = f1 * 2;
-    for (let ch = 0; ch < 2; ch++) {
-        const d = buf.getChannelData(ch);
-        for (let i = 0; i < d.length; i++) {
-            const t   = i / sr;
-            const env = Math.min(t * 3, 1) * Math.min((dur - t) * 3, 1);
-            const pulse = 1 + 0.25 * Math.sin(2 * Math.PI * 1.5 * t);
-            d[i] = env * 0.15 * pulse * (
-                Math.sin(2 * Math.PI * f1 * t) +
-                0.45 * Math.sin(2 * Math.PI * f2 * t) +
-                0.2  * Math.sin(2 * Math.PI * f3 * t)
-            );
-        }
-    }
-    bufCache[song.id] = buf;
-    return buf;
-}
+const audio = new Audio();
+audio.preload = 'metadata';
 
 /* ══════════════════════════════════════════
    PLAYER STATE
@@ -70,6 +32,9 @@ let isPlaying = false, isShuffle = false, isRepeat = false, isMuted = false;
 let volume = 0.7;
 let currentIdx = -1;          // index in SONGS
 let currentQueue = [];        // ordered list of SONGS indices for current context
+let tickInterval = null;
+
+audio.volume = volume;
 
 const $ = id => document.getElementById(id);
 const btnPlay      = $('btnPlay');
@@ -94,50 +59,59 @@ function fmt(s) {
     return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 }
 
-function elapsed() {
-    if (!isPlaying) return pauseOffset;
-    return pauseOffset + (getCtx().currentTime - startTime);
-}
-
 function updateUI() {
-    const song = SONGS[currentIdx];
-    if (!song) return;
-    const e   = Math.min(elapsed(), song.duration);
-    const pct = (e / song.duration) * 100;
-    progressFill.style.width = pct + '%';
-    progressThumb.style.left = pct + '%';
-    timeElapsed.textContent  = fmt(e);
+    if (currentIdx < 0 || !audio.duration) return;
+    const e   = audio.currentTime;
+    const dur = audio.duration || SONGS[currentIdx].duration;
+    const pct = (e / dur) * 100;
+    progressFill.style.width  = pct + '%';
+    progressThumb.style.left  = pct + '%';
+    timeElapsed.textContent   = fmt(e);
 }
 
-function stopAudio() {
-    if (currentSource) { try { currentSource.stop(); } catch(_){} currentSource = null; }
-    clearInterval(tickInterval);
-}
+/* ══════════════════════════════════════════
+   AUDIO EVENT LISTENERS
+══════════════════════════════════════════ */
+audio.addEventListener('timeupdate', updateUI);
 
-function startAudio(songIdx, offset) {
-    stopAudio();
-    const ctx  = getCtx();
-    const song = SONGS[songIdx];
-    const src  = ctx.createBufferSource();
-    src.buffer = getBuffer(song);
-    src.connect(gainNode);
-    src.start(0, offset);
-    currentSource = src;
-    startTime     = ctx.currentTime;
-    pauseOffset   = offset;
-    isPlaying     = true;
+audio.addEventListener('loadedmetadata', () => {
+    timeDuration.textContent = fmt(audio.duration);
+});
+
+audio.addEventListener('ended', () => {
+    if (isRepeat) {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+    } else {
+        nextTrack();
+    }
+});
+
+audio.addEventListener('play', () => {
+    isPlaying = true;
     btnPlay.textContent = '⏸';
-    tickInterval = setInterval(() => {
-        if (elapsed() >= song.duration) {
-            if (isRepeat) { startAudio(songIdx, 0); }
-            else { nextTrack(); }
-        } else { updateUI(); }
-    }, 250);
-}
+    highlightRows(currentIdx);
+});
 
+audio.addEventListener('pause', () => {
+    isPlaying = false;
+    btnPlay.textContent = '▶';
+    highlightRows(currentIdx, true);
+});
+
+audio.addEventListener('error', (e) => {
+    console.warn('Audio error:', e, 'Source:', audio.src);
+    btnPlay.textContent = '▶';
+    isPlaying = false;
+});
+
+/* ══════════════════════════════════════════
+   PLAY / STOP / NEXT / PREV
+══════════════════════════════════════════ */
 function playIndex(songIdx, offset = 0) {
     currentIdx = songIdx;
     const song = SONGS[songIdx];
+
     playerTitle.textContent  = song.title;
     playerArtist.textContent = song.artist;
     playerArt.style.background = song.gradient;
@@ -147,18 +121,27 @@ function playIndex(songIdx, offset = 0) {
     timeDuration.textContent = fmt(song.duration);
     heartBtn.classList.remove('liked');
     heartBtn.textContent = '♡';
-    startAudio(songIdx, offset);
+
+    audio.src = song.src;
+    audio.currentTime = offset;
+    audio.play().then(() => {
+        isPlaying = true;
+        btnPlay.textContent = '⏸';
+    }).catch(err => {
+        console.warn('Playback failed:', err);
+        btnPlay.textContent = '▶';
+        isPlaying = false;
+    });
+
     highlightRows(songIdx);
 }
 
 function pausePlayer() {
-    if (!isPlaying) return;
-    pauseOffset = elapsed();
-    stopAudio();
-    isPlaying = false;
-    btnPlay.textContent = '▶';
-    updateUI();
-    highlightRows(currentIdx, true);
+    audio.pause();
+}
+
+function resumePlayer() {
+    audio.play().catch(() => {});
 }
 
 function nextTrack() {
@@ -172,7 +155,7 @@ function nextTrack() {
 
 function prevTrack() {
     if (!currentQueue.length) return;
-    if (elapsed() > 3) { playIndex(currentIdx, 0); return; }
+    if (audio.currentTime > 3) { audio.currentTime = 0; return; }
     const pos  = currentQueue.indexOf(currentIdx);
     const prev = isShuffle
         ? currentQueue[Math.floor(Math.random() * currentQueue.length)]
@@ -185,16 +168,16 @@ function prevTrack() {
 ══════════════════════════════════════════ */
 btnPlay.addEventListener('click', () => {
     if (currentIdx < 0) return;
-    isPlaying ? pausePlayer() : (() => { startAudio(currentIdx, pauseOffset); highlightRows(currentIdx); })();
+    isPlaying ? pausePlayer() : resumePlayer();
 });
 btnShuffle.addEventListener('click', () => { isShuffle = !isShuffle; btnShuffle.classList.toggle('active', isShuffle); });
 btnRepeat.addEventListener('click',  () => { isRepeat  = !isRepeat;  btnRepeat.classList.toggle('active', isRepeat); });
 btnMute.addEventListener('click', () => {
     isMuted = !isMuted;
-    if (gainNode) gainNode.gain.value = isMuted ? 0 : volume;
+    audio.muted = isMuted;
     btnMute.textContent = isMuted ? '🔇' : '🔊';
-    volumeFill.style.width = isMuted ? '0%' : (volume*100)+'%';
-    volumeThumb.style.left = isMuted ? '0%' : (volume*100)+'%';
+    volumeFill.style.width  = isMuted ? '0%' : (volume*100)+'%';
+    volumeThumb.style.left  = isMuted ? '0%' : (volume*100)+'%';
 });
 heartBtn.addEventListener('click', () => {
     heartBtn.classList.toggle('liked');
@@ -223,15 +206,17 @@ function draggable(el, cb) {
 }
 draggable(progressBar, pct => {
     if (currentIdx < 0) return;
-    const off = pct * SONGS[currentIdx].duration;
-    isPlaying ? startAudio(currentIdx, off) : (() => { pauseOffset = off; updateUI(); })();
+    const dur = audio.duration || SONGS[currentIdx].duration;
+    audio.currentTime = pct * dur;
+    updateUI();
 });
 draggable(volumeBar, pct => {
     volume = pct; isMuted = false;
-    if (gainNode) gainNode.gain.value = volume;
+    audio.volume = volume;
+    audio.muted  = false;
     btnMute.textContent = '🔊';
-    volumeFill.style.width = (volume*100)+'%';
-    volumeThumb.style.left = (volume*100)+'%';
+    volumeFill.style.width  = (volume*100)+'%';
+    volumeThumb.style.left  = (volume*100)+'%';
 });
 
 /* ══════════════════════════════════════════
